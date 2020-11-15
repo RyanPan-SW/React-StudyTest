@@ -24,7 +24,7 @@ let ForwardChild = forwardRef(Child);
 
 function App(props) {
   let [number, setNumber] = useState(0);
-  const inputRef = useRef(null);
+  let inputRef = useRef(null);
  
   const getFocus = () => {
     inputRef.current.focus();
@@ -39,7 +39,7 @@ function App(props) {
   );
 }
 
-function TextInputWithFocusButton() {
+/* function TextInputWithFocusButton() {
   const inputEl = useRef(null);
   const onButtonClick = () => {
     // `current` points to the mounted text input element
@@ -51,6 +51,6 @@ function TextInputWithFocusButton() {
       <button onClick={onButtonClick}>Focus the input</button>
     </>
   );
-}
+} */
 
 ReactDOM.render(<App />, document.getElementById("root"));

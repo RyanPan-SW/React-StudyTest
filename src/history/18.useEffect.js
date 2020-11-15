@@ -19,9 +19,9 @@ function App(props) {
     /**
      * 返回一个函数 又成为销毁函数，作用与class组件的 componentWillUnMount一样
      */
-    /* return () => {
+    return () => {
       clearInterval(timer);
-    }; */
+    };
   }/* , [] */);
 
   return (

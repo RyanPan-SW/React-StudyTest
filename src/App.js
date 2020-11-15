@@ -1,50 +1,51 @@
-import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react'
-import './App.css';
+import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import "./index.css";
 
-
-function Parent() {
+// 父组件
+function App(props) {
   let [number, setNumber] = useState(0);
-  let parentRef = useRef();//{current:null} //每次都会返回同一个对象
+  let parentRef = useRef(null);
 
   const getFocus = () => {
-    //希望在父组件只能调用focus方法，其它的方法都不能调用
-    parentRef.current.focus();//current是此input框 的真实DOM元素
-    //inputRef.current.value = 'something';
-    // parentRef.current.setValue('something');
-  }
-  return (
-    <>
-      <ForwardedChild ref={parentRef} />
-      <button onClick={() => setNumber(prevState => prevState + 1)}>+</button>
-      <button onClick={getFocus}>获得焦点</button>
-    </>
-  )
+    parentRef.current.focus();
+  };
 
+  return (
+    <div>
+      <ForwardChild ref={parentRef} value={number} />
+      <button onClick={getFocus}>获取焦点</button>
+      <button onClick={() => setNumber(number + 1)}>+</button>
+    </div>
+  );
 }
 
-
-
-//一定是第个参数
-function Child(props, parentRef) {
-  // let inputRef = useRef();
-  /*   useImperativeHandle(parentRef, () => (
-      {
-        focus() {
-          inputRef.current.focus();
-        },
-        setValue(newVal) {
-          inputRef.current.value = newVal;
-        }
-      }
-    )); */
-  return (
-    <>
-      <input type="text" ref={parentRef} />
-    </>
-  )
-
+function Child(props, ref) {
+  let inputRef = useRef();
+  useImperativeHandle(ref, () => {
+    return {
+      focus() {
+        inputRef.current.focus();
+      },
+    };
+  });
+  return <input type="text" value={props.value} ref={ref} />;
 }
 
-let ForwardedChild = forwardRef(Child);
+let ForwardChild = forwardRef(Child);
 
-export default Parent;
+
+/* function TextInputWithFocusButton() {
+  const inputEl = useRef(null);
+  const onButtonClick = () => {
+    // `current` points to the mounted text input element
+    inputEl.current.focus();
+  };
+  return (
+    <>
+      <input ref={inputEl} type="text" />
+      <button onClick={onButtonClick}>Focus the input</button>
+    </>
+  );
+} */
+
+export default App;

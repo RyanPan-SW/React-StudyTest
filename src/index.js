@@ -4,8 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 // import Counter from './components/counter'
-import { Provider } from 'react-redux'
-import store from './store'
+// import { Provider } from 'react-redux'
+// import store from './store'
 
 /* ReactDOM.render(
   <Provider store={store}>
