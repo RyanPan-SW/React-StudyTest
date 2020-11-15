@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 // import Counter from './components/counter'
 // import { Provider } from 'react-redux'
 // import store from './store'
@@ -14,9 +14,5 @@ import reportWebVitals from './reportWebVitals';
   document.getElementById('root')
 ); */
 
-
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 reportWebVitals();
