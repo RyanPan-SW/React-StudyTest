@@ -1,8 +1,15 @@
-import { createStore, /* combineReducers */ } from 'redux';
+import { createStore, applyMiddleware } from "redux";
+import { login } from "./reducers/login";
+import createSageMiddleware from "redux-saga";
+import rootSaga from "./sagas";
+
 // import counter from './reducers/counter';
-import combineReducers from './reducers';
+// import combineReducers from "./reducers";
 
 // let reducers = { counter}
 
-let store = createStore(combineReducers)
-export default store
+let sageMiddleware = createSageMiddleware();
+let store = applyMiddleware(sageMiddleware)(createStore)(login);
+
+sageMiddleware.run(rootSaga);
+export default store;

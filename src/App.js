@@ -1,51 +1,38 @@
-import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
-import "./index.css";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import actions from "./store/actions/login";
 
-// 父组件
-function App(props) {
-  let [number, setNumber] = useState(0);
-  let parentRef = useRef(null);
+function App({ username: propsuUserName, login }) {
+  const [username, setUsername] = useState(null);
+  const [password, setPassword] = useState(null);
 
-  const getFocus = () => {
-    parentRef.current.focus();
+  const clickLogin = () => {
+    login(username, password);
+  };
+  const loginout = () => {
   };
 
-  return (
-    <div>
-      <ForwardChild ref={parentRef} value={number} />
-      <button onClick={getFocus}>获取焦点</button>
-      <button onClick={() => setNumber(number + 1)}>+</button>
-    </div>
-  );
-}
-
-function Child(props, ref) {
-  let inputRef = useRef();
-  useImperativeHandle(ref, () => {
-    return {
-      focus() {
-        inputRef.current.focus();
-      },
-    };
-  });
-  return <input type="text" value={props.value} ref={ref} />;
-}
-
-let ForwardChild = forwardRef(Child);
-
-
-/* function TextInputWithFocusButton() {
-  const inputEl = useRef(null);
-  const onButtonClick = () => {
-    // `current` points to the mounted text input element
-    inputEl.current.focus();
-  };
   return (
     <>
-      <input ref={inputEl} type="text" />
-      <button onClick={onButtonClick}>Focus the input</button>
+      {propsuUserName ? (
+        <form action="">
+          <button onClick={loginout}>login out</button>
+        </form>
+      ) : (
+        <form>
+          <label htmlFor="用户名">
+            <span>username:</span>
+            <input type="text" onChange={setUsername} />
+          </label>
+          <label htmlFor="密码">
+            <span>password:</span>
+            <input type="text" onChange={setPassword} />
+          </label>
+          <button onClick={clickLogin}>login</button>
+        </form>
+      )}
     </>
   );
-} */
+}
 
-export default App;
+export default connect((state) => state, actions)(App);
