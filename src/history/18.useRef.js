@@ -17,7 +17,7 @@ function Child(props, ref) {
       },
     };
   });
-  return <input type="text" value={props.value} ref={ref} />;
+  return <input type="text" value={props.value} ref={inputRef} />;
 }
 
 let ForwardChild = forwardRef(Child);
