@@ -1,5 +1,4 @@
 /**
- *
  * @param {dom} dom 要绑定的DOM元素
  * @param {*} eventType 绑定的时间类型
  * @param {*} listener 时间函数回调 handleClick

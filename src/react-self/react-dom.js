@@ -1,8 +1,10 @@
-import { createDOM } from "../vdom";
+import { createDOM } from "./vdom";
 
 export function render(element, container, componentInstance) {
+  console.log("🚀 ~ file: react-dom.js dom", element);
   let dom = createDOM(element);
-  return container.appendChild(dom);
+  console.log("object", dom);
+  // return container.appendChild(dom);
 }
 
 // export { render}
