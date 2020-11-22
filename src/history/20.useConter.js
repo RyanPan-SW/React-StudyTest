@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, /* useLayoutEffect, */ useEffect } from "react";
 import "./index.css";
 
 /*
@@ -33,6 +33,7 @@ function Counter2(params) {
   return (
     <div>
       <p>{number}</p>
+      <button onClick={() => setNumber(number + 5)}>+ 5 </button>
     </div>
   );
 }

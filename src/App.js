@@ -9,24 +9,23 @@ function App({ username: propsuUserName, login }) {
   const clickLogin = () => {
     login(username, password);
   };
-  const loginout = () => {
-  };
+  const loginout = () => {};
 
   return (
     <>
       {propsuUserName ? (
         <form action="">
-          <button onClick={loginout}>login out</button>
+          <button onClick={loginout}> 当前用户：{username} login out</button>
         </form>
       ) : (
         <form>
           <label htmlFor="用户名">
             <span>username:</span>
-            <input type="text" onChange={setUsername} />
+            <input type="text" onChange={(e) => setUsername(e.target.value)} />
           </label>
           <label htmlFor="密码">
             <span>password:</span>
-            <input type="text" onChange={setPassword} />
+            <input type="text" onChange={(e) => setPassword(e.target.value)} />
           </label>
           <button onClick={clickLogin}>login</button>
         </form>

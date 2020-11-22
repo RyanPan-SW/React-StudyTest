@@ -8,7 +8,7 @@ export const login = (state = loginInitialState, action) => {
       return { username: action.username, password: action.password };
     case types.SET_USERNAME:
       return { username: action.username };
-    case types.LOGIN_ERROR:
+    case types.LOGINOUT:
       return { username: null, error: action.error };
     default:
       return state;
