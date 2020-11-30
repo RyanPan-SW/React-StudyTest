@@ -1,6 +1,6 @@
 import { ReactCurrentOwner, RESERVED_PROPS } from "./ReactCurrentOwner";
-import { REACT_ELEMENT_TYPE } from "./ReactSymbols";
 import { Component } from "./ReactComponent";
+import { ReactElement } from "./vdom";
 
 function hasValidRef(config) {
   return config.ref !== undefined;
@@ -9,17 +9,12 @@ function hasValidKey(config) {
   return config.key !== undefined;
 }
 
-function ReactElement(type, key, ref, _self, _source,  _owner, props) {
-  const element = { $$typeof: REACT_ELEMENT_TYPE, type, _owner, props };
-  return element;
-}
-
 export function createElement(type, config, children) {
   let propName;
-  let key = null;//在兄弟节点中唯一标识自己的唯一性的，在同一个的不同兄弟之间key要求不同
-  let ref = null;//ref=React.createRef() "username" this.refs.username {input=>this.username = input} 从而得到真实的DOM元素
-  let self = null;//用来获取真实的this指针 
-  let source = null;//用来定位创建此虚拟DOM元素在源码的位置 哪个文件 哪一行 哪一列
+  let key = null; //在兄弟节点中唯一标识自己的唯一性的，在同一个的不同兄弟之间key要求不同
+  let ref = null; //ref=React.createRef() "username" this.refs.username {input=>this.username = input} 从而得到真实的DOM元素
+  let self = null; //用来获取真实的this指针
+  let source = null; //用来定位创建此虚拟DOM元素在源码的位置 哪个文件 哪一行 哪一列
   const props = {};
 
   if (config !== null) {
