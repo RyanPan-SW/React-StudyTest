@@ -8,7 +8,12 @@ function hasValidRef(config) {
 function hasValidKey(config) {
   return config.key !== undefined;
 }
-
+/**
+ * 
+ * @param {*} type 元素类型
+ * @param {*} config 配置对象属性
+ * @param {*} children 子元素
+ */
 export function createElement(type, config, children) {
   let propName;
   let key = null; //在兄弟节点中唯一标识自己的唯一性的，在同一个的不同兄弟之间key要求不同
