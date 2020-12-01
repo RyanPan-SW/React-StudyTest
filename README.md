@@ -1,13 +1,55 @@
 # Getting Started with Create React App
 
-### 8.useLayoutEffect
+### 1. createElement
+
+### 2. ReactElement
+
+ReactElement 是通过 createElement 创建，调用改方法需要传入三个参数：
+
+- type ReactElement 类型
+- config style / className 等
+- children
+
+```js
+export function createElement(type, config, children) {
+  // 处理逻辑
+  return ReactElement(
+    type,
+    key,
+    ref,
+    self,
+    source,
+    ReactCurrentOwner.current,
+    props
+  );
+}
+
+export function ReactElement(type, key, ref, self, source, owner, props) {
+  const element = {
+    // 标记React元素类型
+    $$typeof: REACT_ELEMENT_TYPE,
+    // react内置属性
+    type,
+    key,
+    ref,
+    self,
+    source,
+    // 记录负责创建此元素的组件
+    _owner: owner,
+    props,
+  };
+  return element;
+}
+```
+
+### 8. useLayoutEffect
 
 - 其函数签名与`useEffect`相同，但是他会在所有的 DOM 变更之后同步调用 Effect
 - 可以使用`useLayoutEffect`来读取 DOM 布局，并同步触发重渲染
 - 在浏览器执行绘制之前，`useLayoutEffect`内部的更新计划将被同步执行
 - 尽可能的使用标准的 ·useEffect·以避免阻塞试图更新
 
-### 9.自定义 Hook
+### 9. 自定义 Hook
 
 - 有时候我们想要在组件之间复用一些状态逻辑
 - 自定义 Hook 可以让你在不增加组件的情况下达到相同的目的
@@ -188,25 +230,24 @@ console.log(objA.name);
 
 内部实现了一套完整的 Persistent Data Structure，还有很多医用的数据类型。像： `Collection`、`List`、`Map`、`Set`、`Record`、`Seq`
 
-| 方法     | 作用           |
-| -------- | -------------- |
-| isMap    | 判断是否是Map  |
-| clear    | 清空值         |
-| set      | 设置值         |
-| delete   | 删除值         |
-| update   | 更新           |
-| merge    | 合并           |
-| setIn    | 设置值         |
-| deleteIn | 删除值         |
-| updateIn | 更新值         |
-| mergeIn  | 合并           |
-| get      | 获取值         |
-| getIn    | 获取值         |
-| keys     | key的数组      |
-| values   | values的数组   |
-| entries  | entry的数组    |
-| toJS     | 转成普通JS对象 |
-| toObject | 转成普通对象   |
-| toJSON   | 转成JSON对象   |
-| toArray  | 转成数组       |
-
+| 方法     | 作用             |
+| -------- | ---------------- |
+| isMap    | 判断是否是 Map   |
+| clear    | 清空值           |
+| set      | 设置值           |
+| delete   | 删除值           |
+| update   | 更新             |
+| merge    | 合并             |
+| setIn    | 设置值           |
+| deleteIn | 删除值           |
+| updateIn | 更新值           |
+| mergeIn  | 合并             |
+| get      | 获取值           |
+| getIn    | 获取值           |
+| keys     | key 的数组       |
+| values   | values 的数组    |
+| entries  | entry 的数组     |
+| toJS     | 转成普通 JS 对象 |
+| toObject | 转成普通对象     |
+| toJSON   | 转成 JSON 对象   |
+| toArray  | 转成数组         |
