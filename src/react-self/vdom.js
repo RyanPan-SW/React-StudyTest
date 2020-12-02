@@ -99,4 +99,5 @@ export function updateClassComponent(element) {
   // 二、
   let dom = createDOM(renderVirtualDOM); // 在实例组件的类上面挂载一个DOM属性，指向真实的DOM节点
   classInstance.dom = dom;
+  return dom
 }
