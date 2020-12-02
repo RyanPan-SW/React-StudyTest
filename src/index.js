@@ -27,13 +27,17 @@ class ClassComponent extends React.Component {
     // });
   }
 
+  handleDiv = () => {
+    console.log('handleDiv');
+  }
+  
   handleClick = () => {
     console.log("object");
   };
 
   render() {
     return (
-      <div>
+      <div onClick={this.handleDiv}>
         <span onClick={this.handleClick}>12</span>
         <h2>ggg</h2>
       </div>

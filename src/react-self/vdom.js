@@ -82,7 +82,6 @@ export function reconcileChildren(children, parentDOM) {
  * @param {*} element {function component}
  */
 export function updateFunctionComponent (element) {
-  console.log(element);
   let {type, props} = element
   let renderVirtualDOM = type(props)
   return createDOM(renderVirtualDOM)
@@ -93,7 +92,6 @@ export function updateFunctionComponent (element) {
  * @param {*} element {class component}
  */
 export function updateClassComponent (element) {
-  console.log(element);
   let {type, props} = element
   let classInstance = new type(props)
   let renderVirtualDOM = classInstance.render()

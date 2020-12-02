@@ -5,6 +5,8 @@
  * @param {*} listener 时间函数回调 handleClick
  */
 
+import { updateQueue } from "./ReactComponent";
+
 export function addEvent(dom, eventType, listener) {
   // 1. 现在dom创建一个属性 store,用来存放listener 事件
   let store = dom.store || (dom.store = {});
@@ -19,6 +21,7 @@ export function addEvent(dom, eventType, listener) {
  * 1. 为了合成事件
  * 2. 为了方便回收event对象
  * 3. 为了屏蔽浏览器兼容差异
+ * 4. 为了实现批量更新
  * @param {*} event 
  */
 
@@ -28,20 +31,24 @@ export function dispatchEvent(event) {  // 这里的event是原生的事件对�
   // 1. event => DOM元素
   
   let { target, type } = event;
-  // 2. onClick
-  let eventType = "on" + type;
-  let { store } = target;
-  let listener = store && store[eventType];
-  if (listener) {
-    syntheicEvent.nativeEvent = event
-    for (const key in syntheicEvent) {
-      syntheicEvent[key] = event[key]
+  // while (target) {  // 这里是为了实现手动冒泡
+    // 2. onClick
+    let eventType = "on" + type;
+    let { store } = target;
+    let listener = store && store[eventType];
+    if (listener) {
+      syntheicEvent.nativeEvent = event
+      for (const key in syntheicEvent) {
+        syntheicEvent[key] = event[key]
+      }
+      updateQueue.isBatchingUpdate = true
+      // listener.call(target, syntheicEvent);
+      listener(syntheicEvent);
+      updateQueue.isBatchingUpdate = false
+      // 使用之后回收
+      for (const key in syntheicEvent) {
+        syntheicEvent[key] = null
+      }
     }
-    listener.call(target, syntheicEvent);
-    // 使用之后回收
-    for (const key in syntheicEvent) {
-      syntheicEvent[key] = null
-    }
-
-  }
+  // }
 }
