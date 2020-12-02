@@ -1,4 +1,5 @@
-import { createElement } from "./react";
+
+import { addEvent } from "./event";
 import { render } from "./react-dom";
 import { REACT_ELEMENT_TYPE } from "./ReactSymbols";
 
@@ -60,6 +61,8 @@ export function updateProps(dom, props) {
       for (const attr in styles) {
         dom.style[attr] = styles[attr];
       }
+    } else if (key.startsWith('on') ) {
+      addEvent(dom,key.toLocaleLowerCase(), props[key])
     } else {
       dom[key] = props[key];
     }
@@ -82,7 +85,6 @@ export function updateFunctionComponent (element) {
   console.log(element);
   let {type, props} = element
   let renderVirtualDOM = type(props)
-  console.log("🚀 ~ file: vdom.js ~ line 82 ~ updateFunctionComponent ~ renderVirtualDOM", renderVirtualDOM)
   return createDOM(renderVirtualDOM)
 }
 
@@ -95,6 +97,5 @@ export function updateClassComponent (element) {
   let {type, props} = element
   let classInstance = new type(props)
   let renderVirtualDOM = classInstance.render()
-  console.log("🚀 ~ file: vdom.js ~ line 82 ~ updateFunctionComponent ~ renderVirtualDOM", renderVirtualDOM)
   return createDOM(renderVirtualDOM)
 }
