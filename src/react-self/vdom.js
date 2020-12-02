@@ -29,7 +29,7 @@ export function createDOM(element) {
   let dom
   // 2. 函数组件
   if (typeof type === 'function') {
-    return updateFunctionComponent(element)
+    return type.prototype.isReactComponent ? updateClassComponent(element) : updateFunctionComponent(element)
   } else {
      dom = document.createElement(type); // 创建一个真实的DOM
   }
@@ -74,10 +74,27 @@ export function reconcileChildren(children, parentDOM) {
   }
 }
 
-
+/**
+ * {type: updateFunctionComponent function() , props: {...}}
+ * @param {*} element {function component}
+ */
 export function updateFunctionComponent (element) {
   console.log(element);
   let {type, props} = element
   let renderVirtualDOM = type(props)
+  console.log("🚀 ~ file: vdom.js ~ line 82 ~ updateFunctionComponent ~ renderVirtualDOM", renderVirtualDOM)
+  return createDOM(renderVirtualDOM)
+}
+
+/**
+ * {type: class ClassComponent, props: {...}}
+ * @param {*} element {class component}
+ */
+export function updateClassComponent (element) {
+  console.log(element);
+  let {type, props} = element
+  let classInstance = new type(props)
+  let renderVirtualDOM = classInstance.render()
+  console.log("🚀 ~ file: vdom.js ~ line 82 ~ updateFunctionComponent ~ renderVirtualDOM", renderVirtualDOM)
   return createDOM(renderVirtualDOM)
 }
