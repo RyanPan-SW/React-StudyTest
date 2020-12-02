@@ -13,31 +13,39 @@ import ReactDOM from "./react-self/react-dom";
 class ClassComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { number: 0 };
+    this.state = {
+      number: 0,
+    };
   }
 
-  handleClick = () => {
-    this.setState({ number: this.setState.number + 1 });
-    console.log(this.setState.number);
+  componentDidMount() {
     // 1. 要依赖函数中的上一个值来计算得到下一个值，就需要给setState传递一个函数
-    // this.setState((prevState) => ({ number: prevState.number + 1 }));
-
+    // this.setState(prevState => ({number: prevState.number + 1}))
     // 2. setState 有两个参数，后面是一个回调，和上面作用一样
-    // this.setState({ number: this.state.number + 1 }, () => {
+    // this.setState({ number: 2 }, () => {
     //   this.setState({ number: 4 });
-    //   console.log("object", this.state.number);
     // });
-    // console.log("🚀 ~ file: ", this.state.number);
+  }
+
+  handleDiv = () => {
+    console.log('handleDiv');
+  }
+  
+  handleClick = () => {
+    console.log("object");
   };
 
   render() {
     return (
-      <div>
-        <button onClick={this.handleClick}>{this.state.number}</button>
+      <div onClick={this.handleDiv}>
+        <span onClick={this.handleClick}>12</span>
         <h2>ggg</h2>
       </div>
     );
   }
 }
 
-ReactDOM.render(<ClassComponent name={"hello"} />, document.getElementById("root"));
+ReactDOM.render(
+  <ClassComponent name={"hello"} />,
+  document.getElementById("root")
+);
