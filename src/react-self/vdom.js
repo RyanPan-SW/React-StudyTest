@@ -1,3 +1,4 @@
+
 import { addEvent } from "./event";
 import { render } from "./react-dom";
 import { REACT_ELEMENT_TYPE } from "./ReactSymbols";
@@ -31,18 +32,18 @@ export function createDOM(element) {
   if (typeof type === "function") {
     return type.prototype.isReactComponent ? updateClassComponent(element) : updateFunctionComponent(element);
   } else {
-    dom = document.createElement(type); // 创建一个真实的DOM
+     dom = document.createElement(type); // 创建一个真实的DOM
   }
 
   updateProps(dom, props);
-  if (typeof props.children === "string" || typeof props.children === "number") {
-    dom.textContent = props.children;
-  } else if (typeof props.children === "object" && props.children.type) {
-    render(props.children, dom);
+  if (typeof props.children === 'string' || typeof props.children === 'number') {
+    dom.textContent = props.children
+  } else if (typeof props.children === 'object' && props.children.type){
+    render(props.children, dom)
   } else if (Array.isArray(props.children)) {
     reconcileChildren(props.children, dom);
   } else {
-    dom.textContent = props.children ? props.children.toString() : "";
+    dom.textContent = props.children ? props.children.toString() : ''
   }
   // element.dom = dom
   return dom;
@@ -56,20 +57,20 @@ export function createDOM(element) {
 export function updateProps(dom, props) {
   for (const key in props) {
     if (key === "children") continue;
-    if (key === "style") {
-      // { color: 'red' }
+    if (key === "style") {    // { color: 'red' }
       let styles = props[key];
       for (const attr in styles) {
         dom.style[attr] = styles[attr];
       }
-    } else if (key.startsWith("on")) {
-      addEvent(dom, key.toLocaleLowerCase(), props[key]);
+    } else if (key.startsWith('on') ) {
+      addEvent(dom,key.toLocaleLowerCase(), props[key])
     } else {
       dom[key] = props[key];
     }
   }
 }
 // {"type":"div","props":{"children":"123"}}
+
 
 export function reconcileChildren(children, parentDOM) {
   for (let i = 0; i < children.length; i++) {

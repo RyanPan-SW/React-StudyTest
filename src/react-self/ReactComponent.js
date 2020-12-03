@@ -2,12 +2,12 @@ import { createDOM } from "./vdom";
 
 // 批量更新更新
 export let updateQueue = {
-  isBatchingUpdate: false, // 属否是批量更新模式
+  isBatchingUpdate: false,  // 属否是批量更新模式
   updaters: [], // 更新器的数组
 
   // 1. 添加状态
   add(updater) {
-    this.updaters.push(updater); // 传递更新器
+    this.updaters.push(updater);  // 传递更新器
   },
 
   // 2. 批量更新
@@ -38,10 +38,10 @@ class Updater {
 
   // 2. 更新组件
   updateComponent() {
-    let { classInstance, paddingState } = this; // updater {里的类组件实力, 数组中的状态}
-    if (paddingState.length > 0) {
-      classInstance.state = this.getState();
-      classInstance.forceUpdate();
+    let { classInstance, paddingState } = this // updater {里的类组件实力, 数组中的状态}
+    if ( paddingState.length > 0 ) {
+      classInstance.state = this.getState()
+      classInstance.forceUpdate()
     }
   }
 
