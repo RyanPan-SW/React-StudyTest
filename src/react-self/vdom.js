@@ -22,12 +22,12 @@ export function ReactElement(type, key, ref, _self, _source, _owner, props) {
 }
 
 export function createDOM(element) {
-  if (typeof element === "string" || typeof element === "number") {
-    return document.createTextNode(element);
-  }
   let { type, props } = element; // {"type":"div","props":{"children":"123", "style": { "color": "red" }}}
-  let dom;
+  let dom = null;
   // 2. 函数组件
+  if (typeof element === "string" || typeof element === "number") {
+    return (dom = document.createTextNode(element));
+  }
   if (typeof type === "function") {
     return type.prototype.isReactComponent ? updateClassComponent(element) : updateFunctionComponent(element);
   } else {
@@ -44,6 +44,7 @@ export function createDOM(element) {
   } else {
     dom.textContent = props.children ? props.children.toString() : "";
   }
+  // element.dom = dom
   return dom;
 }
 
@@ -83,7 +84,8 @@ export function reconcileChildren(children, parentDOM) {
 export function updateFunctionComponent(element) {
   let { type, props } = element;
   let renderVirtualDOM = type(props);
-  return createDOM(renderVirtualDOM);
+  let newDOM = createDOM(renderVirtualDOM);
+  return newDOM
 }
 
 /**
@@ -97,7 +99,7 @@ export function updateClassComponent(element) {
   // 一、
   // return createDOM(renderVirtualDOM)
   // 二、
-  let dom = createDOM(renderVirtualDOM); // 在实例组件的类上面挂载一个DOM属性，指向真实的DOM节点
-  classInstance.dom = dom;
-  return dom
+  let newDOM = createDOM(renderVirtualDOM); // 在实例组件的类上面挂载一个DOM属性，指向真实的DOM节点
+  classInstance.dom = newDOM;
+  return newDOM;
 }

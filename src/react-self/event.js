@@ -26,9 +26,8 @@ export function addEvent(dom, eventType, listener) {
 
 // 合成事件（集成）syntheicEvent
 let syntheicEvent = {}
-export function dispatchEvent(event) {  // 这里的event是原生的事件对象
+export function dispatchEvent(event) {// 这里的event是原生的事件对象
   // 1. event => DOM元素
-  
   let { target, type } = event;
   // while (target) {  // 这里是为了实现手动冒泡
     // 2. onClick
@@ -36,7 +35,7 @@ export function dispatchEvent(event) {  // 这里的event是原生的事件对�
     let { store } = target;
     let listener = store && store[eventType];
     if (listener) {
-      syntheicEvent.nativeEvent = event
+      syntheicEvent.nativeEvent = event 
       for (const key in syntheicEvent) {
         syntheicEvent[key] = event[key]
       }
@@ -49,5 +48,6 @@ export function dispatchEvent(event) {  // 这里的event是原生的事件对�
         syntheicEvent[key] = null
       }
     }
+    updateQueue.batchUpdate()
   // }
 }
