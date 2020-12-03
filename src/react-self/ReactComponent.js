@@ -52,11 +52,11 @@ class Updater {
     if (paddingState.length > 0) {
       paddingState.forEach(nextState => {
         if (typeof nextState === "function") {
-          debugger;
+          ;
           state = nextState(state);
           // state = { ...state, ...nextState.call(classInstance, state) };
         } else {
-          debugger;
+          ;
           state = { ...state, ...nextState };
         }
       });
