@@ -1,4 +1,4 @@
-import { createDOM } from "../vdom";
+import { createDOM } from "./vdom";
 
 export function render(element, container, componentInstance) {
   let dom = createDOM(element);

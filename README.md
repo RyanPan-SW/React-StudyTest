@@ -1,43 +1,85 @@
 # Getting Started with Create React App
 
-## React
+- tag 说明
+  tag 1.0.0 完成 createElement 虚拟元素渲染
 
-
-
-
+## React v15
 
 ### 1. createElement
+
+- 接受三个参数
+- type 元素类型
+- config 元素配置（如： style， className，...）
+- children 自元素（可以是数组，对象，方法）
+
+<details>
+<summary>createElement</summary>
+
+```js
+export function createElement(type, config, children) {
+  let propName;
+  const props = {};
+
+  if (config !== null) {
+    self = config.__self === undefined ? null : config.__self;
+    source = config.__source === undefined ? null : config.__source;
+    for (propName in config) {
+      if (!RESERVED_PROPS.hasOwnProperty(propName)) {
+        props[propName] = config[propName];
+      }
+    }
+  }
+
+  const childrenLength = arguments.length - 2;
+  if (childrenLength === 1) {
+    /* 1. 只有一个children，直接渲染 */
+    props.children = children;
+  } else if (childrenLength > 1) {
+    /* 2.由多个元素，赋值给props.children,继续渲染 */
+    const childArray = Array(childrenLength);
+    for (let i = 0; i < childrenLength; i++) {
+      childArray[i] = arguments[i + 2];
+    }
+    props.children = childArray;
+  }
+
+  if (type && type.defaultProps) {
+    const defaultProps = type.defaultProps;
+    //只有当属性对象没有此属性对应的值的时候，默认属性才会生效，否则直接忽略
+    for (propName in defaultProps) {
+      if (props[propName] === undefined) {
+        props[propName] = defaultProps[propName];
+      }
+    }
+  }
+
+  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+}
+```
+
+</details>
 
 ### 2. ReactElement
 
 ReactElement 是通过 createElement 创建，调用改方法需要传入三个参数：
 
-- type ReactElement 类型
-- config style / className 等
-- children
+> 主要接受参数，返回一个 react 元素
+
+<details>
+<summary>ReactElement</summary>
 
 ```js
 export function createElement(type, config, children) {
   // 处理逻辑
-  return ReactElement(
-    type,
-    key,
-    ref,
-    self,
-    source,
-    ReactCurrentOwner.current,
-    props
-  );
+  return ReactElement(type, ..., ReactCurrentOwner.current, props);
 }
 
-export function ReactElement(type, key, ref, self, source, owner, props) {
+export function ReactElement(type, ..., owner, props) {
   const element = {
     // 标记React元素类型
     $$typeof: REACT_ELEMENT_TYPE,
     // react内置属性
-    type,
-    key,
-    ref,
+    ...,
     self,
     source,
     // 记录负责创建此元素的组件
@@ -47,6 +89,53 @@ export function ReactElement(type, key, ref, self, source, owner, props) {
   return element;
 }
 ```
+
+</details>
+
+### 3. createDOM
+
+> 接受虚拟 DOM，将其转变为真实的 DOM 元素
+
+<details>
+<summary>代码</summary>
+
+```js
+export function createDOM(element) {
+  let { type, props } = element; // {"type":"div","props":{"children":"123", "style": { "color": "red" }}}
+  let dom = null;
+  // 1. 是数字，字符串等，直接渲染
+  if (typeof element === "string" || typeof element === "number") {
+    return (dom = document.createTextNode(element));
+  }
+  // 2. 函数组件
+  if (typeof type === "function") {
+    return type.prototype.isReactComponent ? updateClassComponent(element) : updateFunctionComponent(element);
+  } else {
+    dom = document.createElement(type); // 创建一个真实的DOM
+  }
+
+  updateProps(dom, props);
+  if (typeof props.children === "string" || typeof props.children === "number") {
+    dom.textContent = props.children;
+  } else if (typeof props.children === "object" && props.children.type) {
+    render(props.children, dom);
+  } else if (Array.isArray(props.children)) {
+    reconcileChildren(props.children, dom);
+  } else {
+    dom.textContent = props.children ? props.children.toString() : "";
+  }
+  // element.dom = dom
+  return dom;
+}
+```
+
+</details>
+
+### setState
+
+> 代码较多，直接看源文件
+
+> `state`是批量更新的，多个 setState 是统一进行批量更新的。`setState`有时候为异步，有时候为同步，例如在`setTimeout`计时器，`fatch`回调里面是同步的。（即，在 React 管辖的范围内是异步，范围以外是同步的。）
 
 ### 8. useLayoutEffect
 
@@ -62,7 +151,12 @@ export function ReactElement(type, key, ref, self, source, owner, props) {
 - Hook 是一种复用状态的逻辑方式，他不服用 state 本身，事实上 Hook 的每次调用都有一个完全独立的 state
 - 自定义的 hook 更新是一种约定，而不是一种功能，如果函数的名字一 use 开头，并且调用了其他的 hook，则称为自定义 Hook
 
-## Sage
+# Sage
+
+---
+
+<details>
+<summary>内容</summary>
 
 ```js
 function run (sage) {
@@ -84,9 +178,16 @@ function * sage () {
 }
 ```
 
+</details>
+<br/>
+<br/>
+
 # CONNECT
 
 ---
+
+<details>
+<summary>内容</summary>
 
 #### 1. 生成项目并且安装模块
 
@@ -211,9 +312,16 @@ export default function connectRouter(history) {
 }
 ```
 
+</details>
+<br/>
+<br/>
+
 # Immutable
 
 ---
+
+<details>
+<summary>内容</summary>
 
 ### 1.可共享可改变状态是万恶之源
 
@@ -257,3 +365,5 @@ console.log(objA.name);
 | toObject | 转成普通对象     |
 | toJSON   | 转成 JSON 对象   |
 | toArray  | 转成数组         |
+
+</details>
