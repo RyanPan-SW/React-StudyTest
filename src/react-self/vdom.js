@@ -33,6 +33,7 @@ export function createDOM(element) {
   } else {
     dom = document.createElement(type); // 创建一个真实的DOM
   }
+
   if (ref) {
     ref.current = dom;
   }
@@ -98,6 +99,10 @@ export function updateFunctionComponent(element) {
 export function updateClassComponent(element) {
   let { type, props, ref } = element;
   let classInstance = new type(props);
+  // 2. 实现生命周期 componentWillMount
+  if (classInstance.componentWillMount) {
+    classInstance.componentWillMount();
+  }
   if (ref) {
     ref.current = classInstance;
   }
@@ -107,5 +112,8 @@ export function updateClassComponent(element) {
   // 二、
   let newDOM = createDOM(renderVirtualDOM); // 在实例组件的类上面挂载一个DOM属性，指向真实的DOM节点
   classInstance.dom = newDOM;
+  if (classInstance.componentDidMount) {
+    classInstance.componentDidMount();
+  }
   return newDOM;
 }

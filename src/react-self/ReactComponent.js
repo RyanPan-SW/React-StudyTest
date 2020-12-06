@@ -15,7 +15,7 @@ export let updateQueue = {
     let { updaters } = this;
     this.isBatchingUpdate = true;
     // 更新每个更新期，更新组件，清空数组，还原批量更新 isBatchingUpdate
-    updaters.forEach(updater => updater.updateComponent());
+    updaters.forEach((updater) => updater.updateComponent());
     this.isBatchingUpdate = false; // 设置为非批量更新模式
     updaters.length = 0;
   },
@@ -30,18 +30,37 @@ class Updater {
   // 1. 把分状态或者更新函数放在数组中缓存起来
   addState(partialState) {
     this.paddingState.push(partialState);
+    this.emitUpdate();
     // 判断
     // 当前是否处于批量更新模式(异步)，则先添加更新队列去等待更新
     // 当前是否处于非批量更新模式(同步)，直接更新组件
-    updateQueue.isBatchingUpdate ? updateQueue.add(this) : this.updateComponent();
+    // updateQueue.isBatchingUpdate ? updateQueue.add(this) : this.updateComponent();
+  }
+
+  emitUpdate(nextProps) {
+    this.nextProps = nextProps;
+
+    debugger;
+    if (this.classInstance.componentWillReceiveProps) {
+      this.classInstance.componentWillReceiveProps(nextProps);
+    }
+    if (this.nextProps || !updateQueue.isBatchingUpdate) {
+      this.updateComponent();
+    } else {
+      updateQueue.add(this);
+    }
   }
 
   // 2. 更新组件
   updateComponent() {
-    let { classInstance, paddingState } = this; // updater {里的类组件实力, 数组中的状态}
-    if (paddingState.length > 0) {
-      classInstance.state = this.getState();
-      classInstance.forceUpdate();
+    let { classInstance, paddingState, nextProps } = this; // updater {里的类组件实力, 数组中的状态}
+    if (nextProps || paddingState.length > 0) {
+      // 1. 获取state，更新组件
+      // classInstance.state = this.getState();
+      // classInstance.forceUpdate();
+      // 2.
+      let nextState = this.getState();
+      shouldUpdate(classInstance, nextProps, nextState);
     }
   }
 
@@ -50,7 +69,7 @@ class Updater {
     let { classInstance, paddingState } = this;
     let { state } = classInstance; // 获取到老组件的当前状态
     if (paddingState.length > 0) {
-      paddingState.forEach(nextState => {
+      paddingState.forEach((nextState) => {
         if (typeof nextState === "function") {
           state = nextState(state);
           // state = { ...state, ...nextState.call(classInstance, state) };
@@ -64,6 +83,18 @@ class Updater {
   }
 }
 
+function shouldUpdate(classInstance, nextProps, nextState) {
+  // 不管是否更新了组件，都会更新内部的属性和状态
+  classInstance.props = nextProps || classInstance.props;
+  classInstance.state = nextState || classInstance.state;
+  // 如果有shouldComponentUpdate，并且返回值为true，就更新
+  if (classInstance.shouldComponentUpdate && !classInstance.shouldComponentUpdate(nextProps, nextState)) {
+    return;
+  }
+  classInstance.forceUpdate();
+}
+
+// 1.实例类
 class Component {
   // 1.
   constructor(props) {
@@ -79,11 +110,20 @@ class Component {
 
   // 3.
   forceUpdate() {
+    if (this.componentWillUpdate) {
+      this.componentWillUpdate();
+    }
+
+    // 源码实在这里进行diff比较之后，执行componentWillUnmount方法
+
     let newVDOM = this.render(); // 新的虚拟DOM
     let newDOM = createDOM(newVDOM); // 创建新的真实DOM元素
     let oldDOM = this.dom; // 来源于虚拟dom的updateClassComponent,组件的操作
     oldDOM.parentNode.replaceChild(newDOM, oldDOM);
     this.dom = newDOM;
+    if (this.componentDidUpdate) {
+      this.componentDidUpdate();
+    }
   }
 }
 // 这里是用来区分函数组件和类组件的，(因为类组件编译过后也是函数)
