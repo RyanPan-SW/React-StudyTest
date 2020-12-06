@@ -131,11 +131,31 @@ export function createDOM(element) {
 
 </details>
 
-### setState
+### 4.setState
 
 > 代码较多，直接看源文件
 
 > `state`是批量更新的，多个 setState 是统一进行批量更新的。`setState`有时候为异步，有时候为同步，例如在`setTimeout`计时器，`fatch`回调里面是同步的。（即，在 React 管辖的范围内是异步，范围以外是同步的。）
+
+### 5. createRef
+
+> React.createRef() 返回的就是一个对象 { current: null }.<br />
+> 在类组件上面创建的 ref，其实就是在类组件更新过程中将类组件实例赋值给 ref.current
+
+<details>
+<summary>content</summary>
+
+```js
+updateClassComponent (element) {
+  const {..., ref} = element
+  // ...
+  const vDom = new typt(props)
+  if (ref) ref.current = vDom
+  // ...
+}
+```
+
+</details>
 
 ### 8. useLayoutEffect
 

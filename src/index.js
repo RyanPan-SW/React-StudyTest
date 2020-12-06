@@ -8,19 +8,35 @@ class ClassComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = { number: 1 };
-    this.input = React.createRef(); // {current: null}
+    this.classInput = React.createRef(); // {current: null}
   }
 
   handleClick = () => {
-    console.log(this);
+    this.classInput.current.getFocus();
   };
 
   render() {
     return (
       <div>
-        <button ref={this.input} onClick={this.handleClick}>click</button>
+        <ChildInput ref={this.classInput} />
+        <button onClick={this.handleClick}>click</button>
       </div>
     );
+  }
+}
+class ChildInput extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.childInput = React.createRef();
+  }
+
+  getFocus = () => {
+    this.childInput.current.focus();
+  };
+
+  render() {
+    return <input type="text" ref={this.childInput} />;
   }
 }
 

@@ -96,8 +96,11 @@ export function updateFunctionComponent(element) {
  * @param {*} element {class component}
  */
 export function updateClassComponent(element) {
-  let { type, props } = element;
+  let { type, props, ref } = element;
   let classInstance = new type(props);
+  if (ref) {
+    ref.current = classInstance;
+  }
   let renderVirtualDOM = classInstance.render(); // 虚拟DOM
   // 一、
   // return createDOM(renderVirtualDOM)
