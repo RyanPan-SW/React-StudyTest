@@ -9,7 +9,7 @@ function hasValidKey(config) {
   return config.key !== undefined;
 }
 /**
- * 
+ *
  * @param {*} type 元素类型
  * @param {*} config 配置对象属性
  * @param {*} children 子元素
@@ -63,17 +63,13 @@ export function createElement(type, config, children) {
     }
   }
 
-  return ReactElement(
-    type,
-    key,
-    ref,
-    self,
-    source,
-    ReactCurrentOwner.current,
-    props
-  );
+  return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
 }
 
-const React = { createElement, Component };
+export function createRef() {
+  return { current: null };
+}
+
+const React = { createElement, Component, createRef };
 
 export default React;
