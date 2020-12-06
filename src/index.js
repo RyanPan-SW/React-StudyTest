@@ -7,37 +7,25 @@ import ReactDOM from "./react-self/react-dom";
 class ClassComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { number: 1 };
     this.classInput = React.createRef(); // {current: null}
   }
 
   handleClick = () => {
-    this.classInput.current.getFocus();
+    this.classInput.current.focus();
+    console.log(this);
   };
 
   render() {
     return (
       <div>
-        <ChildInput ref={this.classInput} />
+        <ForwareChildInput ref={this.classInput} />
         <button onClick={this.handleClick}>click</button>
       </div>
     );
   }
 }
-class ChildInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.childInput = React.createRef();
-  }
 
-  getFocus = () => {
-    this.childInput.current.focus();
-  };
-
-  render() {
-    return <input type="text" ref={this.childInput} />;
-  }
-}
-
-ReactDOM.render(<ClassComponent name={"hello"} />, document.getElementById("root"));
+const ForwareChildInput = React.forwardRef((props, ref) => {
+  return <input ref={ref} />;
+});
+ReactDOM.render(<ClassComponent />, document.getElementById("root"));

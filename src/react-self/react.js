@@ -1,6 +1,7 @@
 import { ReactCurrentOwner, RESERVED_PROPS } from "./ReactCurrentOwner";
 import { Component } from "./ReactComponent";
 import { ReactElement } from "./vdom";
+import { REACT_FORWARD_REF_TYPE } from "./ReactSymbols";
 
 function hasValidRef(config) {
   return config.ref !== undefined;
@@ -20,7 +21,7 @@ export function createElement(type, config, children) {
   let ref = null; //ref=React.createRef() "username" this.refs.username {input=>this.username = input} 从而得到真实的DOM元素
   let self = null; //用来获取真实的this指针
   let source = null; //用来定位创建此虚拟DOM元素在源码的位置 哪个文件 哪一行 哪一列
-  const props = {};
+  const props = { ...config };
 
   if (config !== null) {
     if (hasValidRef(config)) {
@@ -70,6 +71,18 @@ export function createRef() {
   return { current: null };
 }
 
-const React = { createElement, Component, createRef };
+export function forwardRef(render) {
+  // return class extends Component {
+  //   render() {
+  //     console.log(this.props);
+  //     // return 1;
+  //     return FunctionComponent(this.props,this.ref);
+  //   }
+  // };
+
+  return { $$typeof: REACT_FORWARD_REF_TYPE, render };
+}
+
+const React = { createElement, Component, createRef, forwardRef };
 
 export default React;

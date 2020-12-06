@@ -1,6 +1,6 @@
 import { addEvent } from "./event";
 import { render } from "./react-dom";
-import { REACT_ELEMENT_TYPE } from "./ReactSymbols";
+import { REACT_ELEMENT_TYPE, REACT_FORWARD_REF_TYPE } from "./ReactSymbols";
 
 /**
  *  ReactElement只是一个用来承载信息的容器，他会告诉后续的操作这个节点的以下信息
