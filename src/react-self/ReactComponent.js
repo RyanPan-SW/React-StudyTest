@@ -1,4 +1,4 @@
-import { createDOM } from "./vdom";
+import { comparsComponent, createDOM } from "./vdom";
 
 // 批量更新更新
 export let updateQueue = {
@@ -15,7 +15,7 @@ export let updateQueue = {
     let { updaters } = this;
     this.isBatchingUpdate = true;
     // 更新每个更新期，更新组件，清空数组，还原批量更新 isBatchingUpdate
-    updaters.forEach((updater) => updater.updateComponent());
+    updaters.forEach(updater => updater.updateComponent());
     this.isBatchingUpdate = false; // 设置为非批量更新模式
     updaters.length = 0;
   },
@@ -40,7 +40,6 @@ class Updater {
   emitUpdate(nextProps) {
     this.nextProps = nextProps;
 
-    debugger;
     if (this.classInstance.componentWillReceiveProps) {
       this.classInstance.componentWillReceiveProps(nextProps);
     }
@@ -69,7 +68,7 @@ class Updater {
     let { classInstance, paddingState } = this;
     let { state } = classInstance; // 获取到老组件的当前状态
     if (paddingState.length > 0) {
-      paddingState.forEach((nextState) => {
+      paddingState.forEach(nextState => {
         if (typeof nextState === "function") {
           state = nextState(state);
           // state = { ...state, ...nextState.call(classInstance, state) };
@@ -110,19 +109,20 @@ class Component {
 
   // 3.
   forceUpdate() {
+    const { props, state, oldVDom, dom: oldDOM, getSnapshotBeforeUpdate } = this;
     if (this.componentWillUpdate) {
       this.componentWillUpdate();
     }
-
-    // 源码实在这里进行diff比较之后，执行componentWillUnmount方法
-
+    let extraArgs = getSnapshotBeforeUpdate && getSnapshotBeforeUpdate();
     let newVDOM = this.render(); // 新的虚拟DOM
+    // /* let newDOM = */ comparsComponent(oldVDom, newVDOM);
+
+
     let newDOM = createDOM(newVDOM); // 创建新的真实DOM元素
-    let oldDOM = this.dom; // 来源于虚拟dom的updateClassComponent,组件的操作
     oldDOM.parentNode.replaceChild(newDOM, oldDOM);
     this.dom = newDOM;
     if (this.componentDidUpdate) {
-      this.componentDidUpdate();
+      this.componentDidUpdate(props, state, extraArgs);
     }
   }
 }

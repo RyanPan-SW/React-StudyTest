@@ -48,7 +48,8 @@ export function createDOM(element) {
   } else {
     dom.textContent = props.children ? props.children.toString() : "";
   }
-  // element.dom = dom
+
+  // dom.oldDom = dom; //不管是什么类型的元素，都让它的dom属性指向他创建出来的直实DOM元素
   return dom;
 }
 
@@ -94,21 +95,34 @@ export function updateFunctionComponent(element) {
 
 /**
  * {type: class ClassComponent, props: {...}}
- * @param {*} element {class component}
+ * @param {*} oldElement {class component}
  */
-export function updateClassComponent(element) {
-  let { type, props, ref } = element;
+export function updateClassComponent(oldElement, newElement) {
+  let { type, props, ref, state } = oldElement;
   let classInstance = new type(props);
+  // oldElement.classInstance = classInstance;
   // 2. 实现生命周期 componentWillMount
   if (classInstance.componentWillMount) {
     classInstance.componentWillMount();
   }
+  let nextProps = oldElement.props;
+  if (classInstance.componentWillReceiveProps) {
+    classInstance.componentWillReceiveProps(nextProps);
+  }
+  // if (newElement.type.getDerivedStateFromProps) {
+  //   let newState = newElement.type.getDerivedStateFromProps(nextProps, classInstance.state);
+  //   if (newState) {
+  //     classInstance.state = { ...state, ...newState };
+  //   }
+  // }
   if (ref) {
     ref.current = classInstance;
   }
   let renderVirtualDOM = classInstance.render(); // 虚拟DOM
+  // renderVirtualDOM.oldVDom = renderVirtualDOM // 将旧的dom挂在dom属性下面
+
   // 一、
-  // return createDOM(renderVirtualDOM)
+  // return createDOM(render VirtualDOM)
   // 二、
   let newDOM = createDOM(renderVirtualDOM); // 在实例组件的类上面挂载一个DOM属性，指向真实的DOM节点
   classInstance.dom = newDOM;
@@ -116,4 +130,53 @@ export function updateClassComponent(element) {
     classInstance.componentDidMount();
   }
   return newDOM;
+}
+
+export function comparsComponent(oldElement, newELement) {
+  console.log("oldElement", oldElement, Array.isArray(oldElement));
+  console.log("newELement", newELement);
+
+  // 都没有
+  if (oldElement == null && newELement === null) {
+    return newELement;
+  } else if (oldElement && newELement === null) {
+    // 删除了
+    let currentDOM = oldElement.dom;
+    currentDOM.parentDOM.removeChild(currentDOM);
+    if (oldElement.classInstance.componentWillUnmount) oldElement.classInstance.componentWillUnmount();
+    return null;
+  } else if (oldElement === null && newELement) {
+    let newDOM = createDOM(newELement);
+    newELement.dom = newDOM;
+    return newELement;
+  } else if (newELement && oldElement && oldElement.type !== newELement.type) {
+    let currentDOM = oldElement.dom;
+    let newDOM = createDOM(newELement);
+    newELement.dom = newDOM;
+    currentDOM.parentDOM.replaceChild(newDOM, currentDOM);
+    if (oldElement.classInstance.componentWillUnmount) oldElement.classInstance.componentWillUnmount();
+    return newELement;
+  } else {
+    updateElement(oldElement, newELement);
+    return newELement;
+  }
+}
+
+function updateElement(oldDOM, newDOM) {
+  let currentDOM = (newDOM.dom = oldDOM.dom);
+  newDOM.classInstance = oldDOM.classInstance;
+  if (typeof oldDOM.type === "string") {
+    updateChildren(currentDOM, oldDOM.props.children, newDOM.props.children);
+    updateProps(currentDOM, oldDOM.props, newDOM.props);
+  } else if (typeof oldDOM.type === "function") {
+    updateClassInstance(oldDOM, newDOM);
+  }
+}
+
+function updateChildren(params) {
+  // ...
+}
+
+function updateClassInstance(params) {
+  // ...
 }

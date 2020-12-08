@@ -5,6 +5,5 @@ export function render(element, container, componentInstance) {
   return container.appendChild(dom);
 }
 
-// export { render}
-const ReactDOM = { render };
-export default ReactDOM;
+// eslint-disable-next-line import/no-anonymous-default-export
+export default { render };
