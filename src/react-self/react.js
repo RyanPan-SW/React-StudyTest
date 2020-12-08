@@ -67,11 +67,11 @@ export function createElement(type, config, children) {
   return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
 }
 
-export function createRef() {
+function createRef() {
   return { current: null };
 }
 
-export function forwardRef(render) {
+function forwardRef(render) {
   // return class extends Component {
   //   render() {
   //     console.log(this.props);
@@ -83,6 +83,18 @@ export function forwardRef(render) {
   return { $$typeof: REACT_FORWARD_REF_TYPE, render };
 }
 
-const React = { createElement, Component, createRef, forwardRef };
+function createContext() {
+  let value;
+  function Provider(props) {
+    value = props.value;
+    return props.children;
+  }
+  function Consumer(props) {
+    return props.children(value);
+  }
+  return { Provider, Consumer };
+}
+
+const React = { createElement, Component, createRef, forwardRef, createContext };
 
 export default React;
