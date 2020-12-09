@@ -1,73 +1,74 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-// import React from "./react-self/react";
-// import ReactDOM from "./react-self/react-dom";
-
-let ThemeContext = React.createContext();
-
-class ClassComponent extends React.Component {
+/* class ClassComponent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { color: "red" };
+    this.state = { x: 0, y: 0, a: 1 };
   }
 
-  changeColor = color => {
-    let r = Math.floor(Math.random() * 280);
-    let g = Math.floor(Math.random() * 280);
-    let b = Math.floor(Math.random() * 280);
-    let a = Math.floor(Math.random() * 100);
-    if (color) {
-      this.setState({ color });
-    } else {
-      this.setState({ color: `rgba(${r},${g},${b},${a})` });
-    }
+  onMouseMove = event => {
+    this.setState({ x: event.clientX, y: event.clientY });
   };
 
   render() {
-    let value = { color: this.state.color, changeColor: this.changeColor };
-
+    const { x, y } = this.state;
     return (
-      <ThemeContext.Provider value={value}>
-        <div>
-          <ChildCom />
-          <ChildCom2 />
-          <ChildCom3 />
-        </div>
-      </ThemeContext.Provider>
-    );
-  }
-}
-
-class ChildCom extends React.Component {
-  static contextType = ThemeContext;
-  render() {
-    console.log("🚀 ~ file: index.js ~ line 45 ~ ChildCom ~ contextType", this);
-    return (
-      <div style={{ backgroundColor: this.context.color, marginTop: 10 }} onClick={() => this.context.changeColor()}>
-        Grand color 1
+      <div onMouseMove={this.onMouseMove} style={{ width: 500, height: 500 }}>
+        {this.props.render({ x, y })}
       </div>
     );
   }
 }
 
-class ChildCom2 extends React.Component {
-  static contextType = ThemeContext;
-  render() {
-    return <div style={{ backgroundColor: this.context.color, marginTop: 10 }}>Grand color 2222</div>;
-  }
-}
+ReactDOM.render(
+  <ClassComponent
+    render={value => {
+      console.log("object", value);
+      return (
+        <>
+          <div>mouse offset</div>
+          <p>
+            {value.x}: {value.y}
+          </p>
+        </>
+      );
+    }}
+  />,
+  document.getElementById("root")
+); */
 
-function ChildCom3(props) {
-  return (
-    <ThemeContext.Consumer>
-      {value => (
-        <div style={{ backgroundColor: value.color, marginTop: 10 }} onClick={() => value.changeColor("green")}>
-          Grand color 333
+function WithHight(OldComponent) {
+  return class ClassComponent extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = { x: 0, y: 0, a: 1 };
+    }
+
+    onMouseMove = event => {
+      this.setState({ x: event.clientX, y: event.clientY });
+    };
+
+    render() {
+      return (
+        <div onMouseMove={this.onMouseMove} style={{ width: 500, height: 500 }}>
+          <OldComponent {...this.state} />
         </div>
-      )}
-    </ThemeContext.Consumer>
+      );
+    }
+  };
+}
+function Show(props) {
+  return (
+    <>
+      <div>mouse offset</div>
+      <p>
+        {props.x}: {props.y}
+      </p>
+    </>
   );
 }
 
-ReactDOM.render(<ClassComponent />, document.getElementById("root"));
+let HightComponent = WithHight(Show);
+
+ReactDOM.render(<HightComponent />, document.getElementById("root"));

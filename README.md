@@ -171,6 +171,13 @@ updateClassComponent (element) {
 - Hook 是一种复用状态的逻辑方式，他不服用 state 本身，事实上 Hook 的每次调用都有一个完全独立的 state
 - 自定义的 hook 更新是一种约定，而不是一种功能，如果函数的名字一 use 开头，并且调用了其他的 hook，则称为自定义 Hook
 
+### 10. 高阶组件 render props
+
+- render props 是指一种在 React 组件之间使用一个值为函数的 props 共享代码的简单技术<br/>
+- 具有 render props 的组件接受一个函数，改函数返回一个 React 元素，并调用他而不是实现自己的渲染逻辑<br/>
+- render props 是一个用于告知组件需要渲染什么内容的函数 props<br/>
+- 这也是逻辑复用的一种方式
+
 # Sage
 
 ---
