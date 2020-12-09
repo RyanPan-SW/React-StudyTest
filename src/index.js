@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import MyButton from "./components/MyButton";
 
 /**
  * HOC：属性代理
@@ -15,12 +16,10 @@ const loading = message => OldComponent => {
           document.body.appendChild(loadmodal);
         },
         hide: () => {
-          document.getElementById('loading').remove()
+          document.getElementById("loading").remove();
         },
       };
-      return (
-          <OldComponent {...this.props} {...state} />
-      );
+      return <OldComponent {...this.props} {...state} />;
     }
   };
 };
@@ -28,11 +27,18 @@ const loading = message => OldComponent => {
 let LoadingHello = loading("正在加载...")(Hello);
 
 function Hello(props) {
+  const click = e => {
+    console.log("object", e);
+  };
+
   return (
     <div>
       <p>Hello</p>
       <button onClick={props.show}>show</button>
       <button onClick={props.hide}>hide</button>
+      <MyButton className={`aabbcc`} colors={'danger'} onClick={e => click(e)}>
+        123
+      </MyButton>
     </div>
   );
 }
