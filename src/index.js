@@ -1,49 +1,51 @@
-import React, { Component } from "react";
+import React, { Component /* , useState */ } from "react";
 import ReactDOM from "react-dom";
-import MyButton from "./components/MyButton";
 
-/**
- * HOC：属性代理
- */
+function Counter(props) {
+  const [state, setState] = useState(0);
+  const [state2, setState2] = useState(() => {
+    return 60 * 60 * 80;
+  });
 
-const loading = message => OldComponent => {
-  return class extends Component {
-    render() {
-      const state = {
-        show: () => {
-          let dom = document.getElementById("loading");
-          if (!dom) {
-            let loadmodal = document.createElement("div");
-            loadmodal.innerHTML = `<p id="loading" style="position:fixed;top:100px;z-index:10;background-color:#00000034">${message}</p>`;
-            document.body.appendChild(loadmodal);
-          }
-        },
-        hide: () => {
-          document.getElementById("loading").remove();
-        },
-      };
-      return <OldComponent {...this.props} {...state} />;
-    }
+  const add = () => {
+    setTimeout(() => setState(state => state + 1), 3000);
   };
-};
-
-let LoadingHello = loading("正在加载...")(Hello);
-
-function Hello(props) {
-  const click = e => {
-    console.log("object", e);
-  };
-
   return (
     <div>
-      <p>Hello</p>
-      <button onClick={props.show}>show</button>
-      <button onClick={props.hide}>hide</button>
-      <MyButton className={`aabbcc`} colors={"danger"} onClick={e => click(e)}>
-        123
-      </MyButton>
+      <p>{state}</p>
+      <button
+        onClick={() => {
+          setState(state + 1);
+        }}
+      >
+        +
+      </button>
+      <button onClick={add}>add</button>
     </div>
   );
 }
 
-ReactDOM.render(<LoadingHello />, document.getElementById("root"));
+let lastState;
+function useState(initailState) {
+  let state = lastState || (typeof initailState === "function" ? initailState() : initailState);
+  function setState(newState) {
+    if (typeof newState === "function") {
+      lastState = newState(lastState);
+      if (Object.is(lastState, newState)) {
+        return;
+      }
+    } else {
+      if (Object.is(lastState, newState)) {
+        return;
+      }
+      lastState = newState;
+    }
+    render();
+  }
+  return [state, setState];
+}
+
+function render() {
+  ReactDOM.render(<Counter />, document.getElementById("root"));
+}
+render();
