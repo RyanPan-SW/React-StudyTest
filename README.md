@@ -178,6 +178,47 @@ updateClassComponent (element) {
 - render props 是一个用于告知组件需要渲染什么内容的函数 props<br/>
 - 这也是逻辑复用的一种方式
 
+### 11.useCallback
+
+- 接受一个函数，进行浅比较，返回一个函数，对象等，都可以。
+- 你可以把 useMemo 作为性能优化的手段，但不要把它当成语义上的保证。
+<details>
+<summaty>content</summaty>
+
+```js
+function App(props) {
+  const [number, setNumber] = useState(0);
+  const [name, setName] = useState("zhangsan");
+
+  const handleClick = useCallback(() => {
+    setNumber(number + 1);
+  }, [number]);
+
+  let data = { number };
+  // let data = useMemo(() => {return {number}, [number]}) // useMemo包裹之后将不再重新渲染子组件
+
+  return (
+    <div>
+      <input type="text" value={name} onChange={event => setName(event.target.value)} />
+      <MemoChild handleClick={handleClick} data={data} />
+    </div>
+  );
+}
+
+let MemoChild = React.memo(Child); // 这种方法在data不是对象的时候可以使用，当data是一个引用地址后，就不适用了
+
+function Child(props) {
+  console.log("Child render");
+  return <button onClick={props.handleClick}>{props.data.number}</button>;
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+```
+
+</details>
+
+
+### 12.useCallback
 # Sage
 
 ---

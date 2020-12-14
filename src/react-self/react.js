@@ -2,6 +2,7 @@ import { ReactCurrentOwner, RESERVED_PROPS } from "./ReactCurrentOwner";
 import { Component } from "./ReactComponent";
 import { ReactElement } from "./vdom";
 import { REACT_FORWARD_REF_TYPE } from "./ReactSymbols";
+import { render } from "./react-dom";
 
 function hasValidRef(config) {
   return config.ref !== undefined;
@@ -95,6 +96,22 @@ function createContext() {
   return { Provider, Consumer };
 }
 
-const React = { createElement, Component, createRef, forwardRef, createContext };
+let lastState;
+function useState(initailState) {
+  let state = lastState || (typeof initailState === "function" ? initailState() : initailState);
+  function setState(newState) {
+    if (typeof newState === "function") {
+      lastState = newState(lastState);
+    }
+    if (Object.is(lastState, newState)) {
+      return;
+    }
+    lastState = newState;
+    render()
+  }
+  return [state, setState];
+}
+
+const React = { createElement, Component, createRef, forwardRef, createContext, useState };
 
 export default React;

@@ -1,4 +1,4 @@
-import { comparsComponent, createDOM } from "./vdom";
+import { /* comparsComponent, */ createDOM } from "./vdom";
 
 // 批量更新更新
 export let updateQueue = {
@@ -109,14 +109,13 @@ class Component {
 
   // 3.
   forceUpdate() {
-    const { props, state, oldVDom, dom: oldDOM, getSnapshotBeforeUpdate } = this;
+    const { props, state, /* oldVDom, */ dom: oldDOM, getSnapshotBeforeUpdate } = this;
     if (this.componentWillUpdate) {
       this.componentWillUpdate();
     }
     let extraArgs = getSnapshotBeforeUpdate && getSnapshotBeforeUpdate();
     let newVDOM = this.render(); // 新的虚拟DOM
     // /* let newDOM = */ comparsComponent(oldVDom, newVDOM);
-
 
     let newDOM = createDOM(newVDOM); // 创建新的真实DOM元素
     oldDOM.parentNode.replaceChild(newDOM, oldDOM);
@@ -129,7 +128,11 @@ class Component {
 // 这里是用来区分函数组件和类组件的，(因为类组件编译过后也是函数)
 Component.prototype.isReactComponent = {};
 
-// class PureComponent extends Component {}
+class PureComponent extends Component {
+  shouldComponentUpdate(nextState, nextProps) {
+    return !(Object.is(nextState, this.state) || Object.is(nextProps, this.props));
+  }
+}
+PureComponent.prototype.isReactComponent = true;
 
-// PureComponent.prototype.isReactComponent = true;
-export { Component };
+export { Component, PureComponent };
