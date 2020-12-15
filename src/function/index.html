@@ -6,25 +6,80 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="content" style="height: 4000px"></div>
-    <script src="./index.js"></script>
+    <!-- 防抖 -->
+    <input id="input" type="text" />
+
+    <div id="content" style="height: 4000px">123</div>
+
+    <!-- 节流 -->
+    <!-- <div id="panel" style="background: red; width: 400px; height: 300px"></div> -->
+
     <script>
       let index = 0;
-      function showTop() {
-        let top = document.body.scrollTop || document.documentElement.scrollTop;
-        document.getElementById("content").innerHTML = `${top}px`;
-        console.log(index++, "滚动高度", top);
-      }
-      // window.onscroll = debounce(showTop, 1000);
-      window.addEventListener("scroll", debounce(showTop, 100));
 
-      function debounce(fn, time) {
+      // 防抖
+      function debounce(fn, time, immediate) {
         let timer = null;
         return function () {
+          let that = this,
+            args = arguments;
+
           if (timer) clearTimeout(timer);
-          timer = setTimeout(fn, time);
+          if (!immediate) {
+            // 非立即执行
+            timer = setTimeout(() => {
+              fn.apply(that, args);
+            }, time);
+          } else {
+            let callNow = !timer;
+            timer = setTimeout(() => (timer = null), time);
+            callNow && fn.apply(that, args);
+          }
         };
       }
+
+      var validate = debounce(
+        event => {
+          console.log(index++, "object", event.target.value);
+        },
+        160,
+        true
+      );
+
+      document.getElementById("input").addEventListener("input", validate);
+
+      // window.addEventListener("scroll", throttle(showTop, 2000));
+
+      // 节流例子🌰
+
+      // 节流
+      function throttle(fn, time) {
+        let flag;
+        return function () {
+          let context = this,
+            args = arguments;
+          if (!flag) {
+            flag = setTimeout(() => {
+              fn.apply(context, args);
+              flag = false;
+            }, time);
+          }
+        };
+      }
+
+      let mousemove = throttle(e => {
+        console.log(index++, "object", e.pageX, e.pageY);
+      }, 100);
+
+      function showTop(event, b = 1) {
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
+        document.getElementById("content").innerHTML = `${top}px`;
+        console.log(index++, "滚动高度", top, event, b);
+      }
+
+      window.addEventListener("scroll", throttle(showTop, 160));
+
+      // document.querySelector("#panel").addEventListener("mousemove", mousemove);
     </script>
   </body>
 </html>
