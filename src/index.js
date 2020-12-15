@@ -1,98 +1,49 @@
-import React /* , { useState , useCallback, useMemo } */ from "react";
+
+import React/* , { useReducer } */ from "react";
 import ReactDOM from "react-dom";
 
 /**
- * useCallback 对传递过来的回调函数优化处理，返回也是一个函数
- * useMemo 返回值可以是任何的函数，对象等都可以
- * 也可以使用useMemo实现useCallback
- * cons handleClick = useMemo(() => { return () => {setNumber(number + 1)} }, [number])
+ *
  */
+let lastState;
+function useReducer(reducer, initialState) {
+  lastState = lastState || initialState
+  function dispatch(action) {
+    lastState = reducer(lastState,action)
+    render()
+  }
+  return [ lastState, dispatch ]
+}
+
+// 就是一个普通的纯函数，传入老的状态，返回新的状态
+function reducer(oldState, action) {
+  switch (action.type) {
+    case "ADD":
+      return { number: oldState.number + 1 };
+    case "MINUS":
+      return { number: oldState.number - 1 };
+
+    default:
+      return oldState;
+  }
+}
+
 
 function App(props) {
-  const [number, setNumber] = useState(0);
-  const [name, setName] = useState("zhangsan");
-
-  // const handleClick = () => {
-  //   setNumber(number + 2);
-  // };
-  const handleClick = useCallback(() => {
-    setNumber(number + 1);
-  }, [number]);
-
-  // let data = { number };
-  const data = useMemo(() => ({ number }), [number]);
-  // const data = useMemo(() => {return { number }}, [number]);
+  let initialState = { number: 0 };
+  const [state, dispatch] = useReducer(reducer, initialState /* , init */);
 
   return (
     <div>
-      <input type="text" value={name} onChange={event => setName(event.target.value)} />
-      <MemoChild handleClick={handleClick} data={data} />
+      <p>{state.number}</p>
+      <button onClick={() => dispatch({ type: "ADD" })}>+</button>
+      <button onClick={() => dispatch({ type: "MINUS" })}>-</button>
     </div>
   );
 }
 
-let MemoChild = React.memo(Child);
+function render(){
 
-function Child(props) {
-  console.log("Child render");
-  return <button onClick={props.handleClick}>{props.data.number}</button>;
+  ReactDOM.render(<App />, document.getElementById("root"));
 }
-
-ReactDOM.render(<App />, document.getElementById("root"));
-
-// function render() {
-//   ReactDOM.render(<App />, document.getElementById("root"));
-// }
-// render();
-/**
- *
- */
-
-// let hookState = []; // 存放当前组件的所有state
-// let hookIndex = 0; // 代表单亲hooks的索引
-
-let lastState; /* ( === hookState[hookIndex]) */
-function useState(initailState) {
-  let state = lastState || (typeof initailState === "function" ? initailState() : initailState);
-
-  function setState(newState) {
-    if (typeof newState === "function") {
-      newState = newState(lastState);
-    }
-    if (!Object.is(lastState, newState)) {
-      lastState = newState;
-      // render();
-    }
-  }
-  return [state, setState];
-}
-
-let lastCallbak, lastCallbackDeps;
-function useCallback(callback, deps) {
-  if (lastCallbak) {
-    let same = deps.every((item, index) => item === lastCallbackDeps[index]);
-    if (!same) {
-      lastCallbak = callback;
-      lastCallbackDeps = deps;
-    }
-  } else {
-    lastCallbak = callback;
-    lastCallbackDeps = deps;
-  }
-  return lastCallbak;
-}
-
-let lastMemo, lastMemoDeps;
-function useMemo(factroy, deps) {
-  if (lastMemo) {
-    let same = deps.every((item, index) => item === lastMemoDeps[index]);
-    if (!same) {
-      lastCallbak = factroy();
-      lastCallbackDeps = deps;
-    }
-  } else {
-    lastCallbak = factroy();
-    lastCallbackDeps = deps;
-  }
-  return lastCallbak;
-}
+render()

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="cn">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="content" style="height: 4000px"></div>
+    <script src="./index.js"></script>
+    <script>
+      let index = 0;
+      function showTop() {
+        let top = document.body.scrollTop || document.documentElement.scrollTop;
+        document.getElementById("content").innerHTML = `${top}px`;
+        console.log(index++, "滚动高度", top);
+      }
+      // window.onscroll = debounce(showTop, 1000);
+      window.addEventListener("scroll", debounce(showTop, 100));
+
+      function debounce(fn, time) {
+        let timer = null;
+        return function () {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(fn, time);
+        };
+      }
+    </script>
+  </body>
+</html>
