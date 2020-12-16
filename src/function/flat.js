@@ -86,3 +86,6 @@ function flattenReduce(arr) {
   }, []);
 }
 // console.log("flatten", flattenReduce(arr2));
+
+// 如果数组的每一项全为数字，甚至可以直接使用下面方法
+// console.log(arr1.toString().split(','));
