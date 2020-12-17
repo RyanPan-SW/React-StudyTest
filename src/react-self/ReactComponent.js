@@ -130,9 +130,61 @@ Component.prototype.isReactComponent = {};
 
 class PureComponent extends Component {
   shouldComponentUpdate(nextState, nextProps) {
-    return !(Object.is(nextState, this.state) || Object.is(nextProps, this.props));
+    // return !(Object.is(nextState, this.state) || Object.is(nextProps, this.props));
+    return !shallowEqual(this.props, nextProps);
   }
 }
 PureComponent.prototype.isReactComponent = true;
+
+function is(x, y) {
+  if (x === y) {
+    /**
+     * 这里为了处理， 在js中 ‘===’ 可以判断数据类型是否相等，但其实这样方式也并不十分严谨，例如
+     * +0 === -0;   // js 打印true
+     * NaN === NaN; // js 打印false
+     *
+     * 我们希望上述的判断结果，+0和-0为false，NaN与NaN为true，这时候可以用这种方式
+     * 1/+0 // 结果为Infinity
+     * 1/-0 // 结果为-Infinity
+     * Infinity === -Infinity; // false
+     * 解决 NaN === NaN为false，可以通过NaN和自身不相等的特性来解决
+     * x !== x && y !== y
+     * */
+
+    return x !== 0 || y !== 0 || 1 / x === 1 / y;
+  } else {
+    // 比较自身，判断引用地址是否一样
+    return x !== x && y !== y;
+  }
+}
+
+function shallowEqual(objA, objB) {
+  /*  if (is(objA, objB)) {
+    return true;
+  } */
+  // 源码为上面的处理 ， 为了简化
+  if (objA === objB) {
+    return true;
+  }
+  if (typeof objA !== "object" || objA === null || typeof objB !== "object" || objB === null) {
+    return false;
+  }
+  let keysA = Object.keys(objA); // objA所有的key
+  let keysB = Object.keys(objB);
+
+  // 比较所有的keys长度是否一样
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // 循环keyA中的所有值，与objB进行比对
+  for (const key of keysA) {
+    if (!objB.hasOwnProperty() || objA[key] !== objB[key]) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 export { Component, PureComponent };
