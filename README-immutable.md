@@ -2,9 +2,6 @@
 
 ---
 
-<details>
-<summary>内容</summary>
-
 ### 1.可共享可改变状态是万恶之源
 
 ```js
@@ -47,5 +44,3 @@ console.log(objA.name);
 | toObject | 转成普通对象     |
 | toJSON   | 转成 JSON 对象   |
 | toArray  | 转成数组         |
-
-</details>
