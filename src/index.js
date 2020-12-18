@@ -15,7 +15,7 @@ class App extends React.Component {
     let aoumt = parseInt(this.inputRef.current.value);
     // this.setState({ number: this.state.number + aoumt });
 
-    this.setState({ counter: counter.set("number", counter.get('number') + aoumt) });
+    this.setState({ counter: counter.set("number", counter.get("number") + aoumt) });
   };
 
   render() {
