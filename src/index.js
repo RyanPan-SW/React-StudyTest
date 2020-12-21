@@ -6,17 +6,16 @@ import { Map } from "immutable";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { number: 0, counter: { number: -1 } };
-    // this.state = { number: 0, counter: Map({ number: -1 }) };
+    // this.state = { number: 0, counter: { number: -1 } }; // default
+    this.state = { number: 0, counter: Map({ number: -1 }) }; // immutable
     this.inputRef = React.createRef();
   }
 
   add = () => {
     const { counter } = this.state;
     let aoumt = parseInt(this.inputRef.current.value);
-    this.setState({ counter: { number: counter.number + aoumt } });
-
-    // this.setState({ counter: counter.set("number", counter.get("number") + aoumt) });
+    // this.setState({ counter: { number: counter.number + aoumt } }); // default
+    this.setState({ counter: counter.set("number", counter.get("number") + aoumt) }); // immutable
   };
 
   render() {
@@ -36,8 +35,8 @@ class Couter extends React.PureComponent {
   render() {
     console.log("Couter render");
 
-    // return <div>{this.props.data.get("number")}</div>;
-    return <div>{this.props.data.number}</div>;
+    // return <div>{this.props.data.number}</div>; // default
+    return <div>{this.props.data.get("number")}</div>; // immutable
   }
 }
 

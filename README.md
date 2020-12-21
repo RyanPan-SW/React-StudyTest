@@ -234,3 +234,5 @@ ReactDOM.render(<App />, document.getElementById("root"));
 #
 
 [React 优化](./README-op.md)
+
+[React 骨架屏](https://skeletonreact.com/)[github](https://www.npmjs.com/package/react-content-loader)

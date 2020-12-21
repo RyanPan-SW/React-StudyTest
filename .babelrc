@@ -1,1 +1,8 @@
-{}
+// [
+//   "@babel/preset-react",
+//   {
+//     "runtime": "automatic",
+//     "development": true,
+//     "importSource": "@welldone-software/why-did-you-render"
+//   }
+// ]
