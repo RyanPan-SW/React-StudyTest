@@ -13,14 +13,13 @@ export class FixedSizeList extends React.Component {
     const { itemSize } = this.props;
     this.containterRef.current.addEventListener("scroll", () => {
       let scrollTop = this.containterRef.current.scrollTop || 0;
-      console.log(this.containterRef.current.scrollTop);
       let start = Math.floor(scrollTop / itemSize);
       this.setState({ start: start });
     });
   }
 
   componentWillUnmount() {
-    // this.containter.current.removeEventListener();
+    this.containter.current.removeEventListener();
   }
 
   render() {
@@ -31,8 +30,8 @@ export class FixedSizeList extends React.Component {
       height,
       width,
       overflow: "auto",
-      // willChange: "transform",
-      // direction: "ltr",
+      willChange: "transform",
+      direction: "ltr",
     };
 
     let childrenArray = [];
