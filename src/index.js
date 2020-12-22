@@ -1,7 +1,10 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import Example from "./components/Example";
-// import Example from './components/Example';
+import ContentLoader, { Facebook } from "react-content-loader";
+
+const MyLoader = () => <ContentLoader />;
+const MyLoaderFacebook = () => <Facebook />;
 
 class App extends React.Component {
   constructor(props) {
@@ -10,7 +13,17 @@ class App extends React.Component {
   }
 
   render() {
-    return <Example />;
+    return (
+      <>
+        <Suspense fallback={<MyLoader />}>
+          {/* <MyLoader /> */}
+          <div>1</div>
+        </Suspense>
+        <Example />;
+        <MyLoader />
+        <MyLoaderFacebook />
+      </>
+    );
   }
 }
 
