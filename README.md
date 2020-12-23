@@ -26,6 +26,8 @@ React 的性能优化大致主要有两点
 
 ### 方法一、componment、PureComponment
 
+---
+
 > React.PureComponent 与 React.Component 几乎完全相同，区别就在于， React.PureComponent 通过 props 和 state 的浅对比来实现 shouldComponentUpate()。
 
 - PureComponment 的优缺点
@@ -35,9 +37,13 @@ React 的性能优化大致主要有两点
 
 ### 方法二、React.memo()
 
+---
+
 > 在纯展示组件中，可以使用 React.memo(),将组件包裹一下，在使用就不会造成组件重渲染。
 
 ### 方法三、unstable_useDeferredValue
+
+---
 
 这是一个官方提供的 API
 
@@ -68,6 +74,8 @@ ReactDOM.render(<App />, rootEl);
 参考这里的两个`DOME` ：[同步更新](https://codesandbox.io/s/pensive-shirley-wkp46) vs [异步更新](https://codesandbox.io/s/infallible-dewdney-9fkv9) Demo
 
 ### 方法四、immutable
+
+---
 
 主要用来避免解决对象赋值过程中深拷贝的问题。在分支中有简单的使用例子。
 
@@ -164,6 +172,8 @@ ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 ### 方法五、memoize-one
+
+---
 
 - 先看一个简单非组件、存在的问题，如下
 
