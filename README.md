@@ -33,7 +33,6 @@ React 的性能优化大致主要有两点
 - PureComponment 的优缺点
   > 优点：不需要开发者自己实现 shouldComponentUpdate，就可以进行简单的判断来提升性能。<br/>
   > 缺点： 可能会因深层的数据不一致而产生错误的否定判断，从而 shouldComponentUpdate 结果返回 false，界面得不到更新。为了解决这一问题，可以一使用`Immutable`<br/>
-  > 具体实现在代码，`react-self/ReactComponent`中有实现逻辑
 
 ### 方法二、React.memo()
 
