@@ -2,11 +2,11 @@
 
 这里收录了一些 React 项目项目中用到，和平时学习中遇到的优化方案，仅供参考。
 
-1. [方法一、用 Component 还是 PureComponent](#方法一、componment、PureComponment)
-2. [方法二、React.memo()方法](<#方法二、React.memo()>)
-3. [方法三、unstable_useDeferredValue API](#方法三、unstable_useDeferredValue)
-4. [方法四、immutable](#方法四、immutable)
-5. [方法五、memoize-one](#方法五、memoize-one)
+1. [方法一、用 Component 还是 PureComponent](#方法一componment、PureComponment)
+2. [方法二、React.memo()方法](<#方法二React.memo()>)
+3. [方法三、unstable_useDeferredValue API](#方法三unstable_useDeferredValue)
+4. [方法四、immutable](#方法四immutable)
+5. [方法五、memoize-one](#方法五memoize-one)
 
 ### React 的性能优化大致主要有两点
 
