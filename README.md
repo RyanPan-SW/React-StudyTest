@@ -1,6 +1,19 @@
 ## React 优化方法
 
-这里收录了一些 React 项目项目中用到，和平时学习中遇到的优化方案，仅供参考。
+> 前言：在前端项目越来越庞大的金 Tina，优化是个必不可少的话题。面试、网文推荐也时常会看到这个话题，这里收录了一些 React 项目项目中用到，和平时学习中遇到的优化方案，仅供参考--不定期更新。
+
+React 的性能优化大致主要有两点
+第一点：
+
+- 减少 `render` 次数（`immutable data`、`shouldComponentUpdate`、`PureComponent`）
+- 减少 `render` 复杂度 (`memoize-one`)
+
+第二点：
+
+- 就是在项目中比如骨架屏、长列表、懒加载、预加载等方法，来提升用户体验方面的优化
+
+目录：
+性能的优化：
 
 1. [方法一、用 Component 还是 PureComponent](#方法一componment、PureComponment)
 2. [方法二、React.memo()方法](<#方法二React.memo()>)
@@ -8,10 +21,8 @@
 4. [方法四、immutable](#方法四immutable)
 5. [方法五、memoize-one](#方法五memoize-one)
 
-### React 的性能优化大致主要有两点
-
-1. 减少 `render` 次数（`immutable data`、`shouldComponentUpdate`、`PureComponent`）
-2. 减少 `render` 复杂度 (`memoize-one`)
+用户体验优化：
+...(更新中)
 
 ### 方法一、componment、PureComponment
 
