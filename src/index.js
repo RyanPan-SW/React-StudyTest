@@ -16,10 +16,9 @@ class App extends React.Component {
     return (
       <>
         <Suspense fallback={<MyLoader />}>
-          {/* <MyLoader /> */}
-          <div>1</div>
+          <MyLoader />
         </Suspense>
-        <Example />;
+        <Example />
         <MyLoader />
         <MyLoaderFacebook />
       </>

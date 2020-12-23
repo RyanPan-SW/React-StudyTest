@@ -22,14 +22,12 @@ function * sage () {
 }
 ```
 
-##
-
 [React](./README.md)
 
-##
+---
 
 [CONNECT](./README-connect.md)
 
-##
+---
 
 [Immutable](./README-immutable.md)
