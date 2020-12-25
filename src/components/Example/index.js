@@ -16,7 +16,7 @@ const Row = ({ index, style }) => (
 const Example = () => (
   // <AutoSizer>
   //   {({ height = 650, width = "100%" }) => (
-  <List className="List" height={650} eightitemCount={1000} itemSize={35} width={"100%"}>
+  <List className="List" height={400} eightitemCount={1000} itemSize={35} width={"100%"}>
     {Row}
   </List>
   //   )}

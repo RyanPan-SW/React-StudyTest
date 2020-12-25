@@ -1,10 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
-import Example from "./components/Example";
-import ContentLoader, { Facebook } from "react-content-loader";
-
-const MyLoader = () => <ContentLoader />;
-const MyLoaderFacebook = () => <Facebook />;
+import LayoutSiderDemo from "./layout";
 
 class App extends React.Component {
   constructor(props) {
@@ -13,16 +9,7 @@ class App extends React.Component {
   }
 
   render() {
-    return (
-      <>
-        <Suspense fallback={<MyLoader />}>
-          <MyLoader />
-        </Suspense>
-        <Example />
-        <MyLoader />
-        <MyLoaderFacebook />
-      </>
-    );
+    return <LayoutSiderDemo />;
   }
 }
 

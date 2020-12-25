@@ -1,0 +1,28 @@
+.layout {
+  background: #979797;
+  height: 100vh;
+
+}
+
+.logo {
+  height: 32px;
+  text-align: center;
+  color: #fff;
+  line-height: 32px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 16px;
+}
+
+
+/* .siteLayoutBackground {
+  background: #fff;
+} */
+
+.trigger {
+  color: #fff;
+}
+
+.siteLayoutContent {
+  margin: 24px;
+  /* background-color: #fff; */
+}
