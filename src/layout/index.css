@@ -24,5 +24,6 @@
 
 .siteLayoutContent {
   margin: 24px;
+  overflow: auto;
   /* background-color: #fff; */
 }

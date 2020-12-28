@@ -7,6 +7,7 @@ import "./styles.css";
 const Row = ({ index, style }) => (
   <div
     // className={index % 2 ? "ListItemOdd" : RadomColor()}
+    key={index}
     style={{ ...style, textAlign: "center", background: RadomColor() }}
   >
     Row {index + 1}

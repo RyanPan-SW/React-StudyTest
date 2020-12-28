@@ -19,12 +19,12 @@ export class FixedSizeList extends React.Component {
   }
 
   componentWillUnmount() {
-    this.containter.current.removeEventListener();
+    this.containter && this.containter.current.removeEventListener();
   }
 
   render() {
     const { start } = this.state;
-    const { height, width, itemCount, itemSize, className, children } = this.props; // 依次: 宽、高、条目数量、条目高度
+    const { height, width, itemCount = 0, itemSize = 0, className, children } = this.props; // 依次: 宽、高、条目数量、条目高度
     let containerStyle = {
       position: "relative",
       height,

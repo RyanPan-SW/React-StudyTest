@@ -1,0 +1,14 @@
+.lozadImg > img {
+  width: 250px;
+  display: block;
+  padding: 60px 10px;
+  text-align: center;
+  margin: auto;
+}
+.container > img {
+  width: 250px;
+  display: block;
+  padding: 60px 10px;
+  text-align: center;
+  margin: auto;
+}

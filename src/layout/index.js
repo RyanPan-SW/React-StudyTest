@@ -12,6 +12,7 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import Home from "../page/Home";
+import Lozad from "../components/Lozad";
 
 const { Header, Sider, Content } = Layout;
 
@@ -76,17 +77,22 @@ export default class LayoutSiderDemo extends React.Component {
               </Header>
 
               <Switch>
-                <Content className="siteLayoutContent">
-                  <Route exact path="/">
-                    <Home />
-                  </Route>
-                  <Route path="/about">
-                    <About />
-                  </Route>
-                  <Route path="/about2">
-                    <About />
-                  </Route>
-                </Content>
+                <>
+                  <Content className="siteLayoutContent">
+                    <Route exact path="/">
+                      <Home />
+                    </Route>
+                    <Route path="/about">
+                      <About />
+                    </Route>
+                    <Route path="/about2">
+                      <About />
+                    </Route>
+                    <Route path="/lozad">
+                      <Lozad />
+                    </Route>
+                  </Content>
+                </>
               </Switch>
             </Layout>
           </Layout>
