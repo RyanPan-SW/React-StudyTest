@@ -33,7 +33,7 @@ class App extends React.Component {
 
 class Couter extends React.PureComponent {
   render() {
-    console.log("Couter render");
+    console.log("Couter render1");
 
     // return <div>{this.props.data.number}</div>; // default
     return <div>{this.props.data.get("number")}</div>; // immutable
